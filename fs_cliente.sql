@@ -39,7 +39,8 @@ tb_vendasAcumCliente AS (
 ),
 
 tb_vendasConsolidada AS (
-    SELECT idVendedor,
+    SELECT '2017-06-01' AS dtRef,
+          idVendedor,
           SUM(qtdePedido) AS qtdePedidos,
           COUNT(idClienteUnico) AS qtdeClientes,
           SUM(CASE WHEN compraNoMes = 1 AND compraMesesAnteriores = 0 THEN 1 ELSE 0 END) AS qtdeClienteNovo,
@@ -82,8 +83,7 @@ tb_vendasConsolidada AS (
     ORDER BY idVendedor
 )
 
-SELECT '2017-06-01' AS dtRer,
-       * 
+SELECT * 
 FROM tb_vendasConsolidada
 
 -- COMMAND ----------

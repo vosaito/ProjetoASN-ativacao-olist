@@ -21,10 +21,12 @@ WITH tb_base AS (
     ON v.idVendedor = ip.idVendedor
 
     WHERE date(dtPedido) < '2017-06-01'
+    AND ip.idVendedor IS NOT NULL
 ),
 
 tb_featAvaliacao AS (
-    SELECT idVendedor,
+    SELECT '2017-06-01' AS dtRef, 
+          idVendedor,
           avg(vlNota) AS mediaAvaliacao,
           COUNT(vlNota) AS qtdeAvaliacoes,
           avg(CASE WHEN date(dtPedido) > '2017-06-01' - INTERVAL 14 DAY THEN vlNota END) AS mediaAvaliacao14d,
@@ -72,8 +74,7 @@ tb_featAvaliacao AS (
     GROUP BY idVendedor
 )
 
-SELECT '2017-06-01' AS dtRef,
-        *
+SELECT *
 FROM tb_featAvaliacao
 
 -- COMMAND ----------

@@ -39,7 +39,8 @@ tb_gmvUF AS (
     GROUP BY ufCliente
 ),
 tb_join AS (
-    SELECT t1.idVendedor,
+    SELECT '2017-06-01' AS dtRef, 
+          t1.idVendedor,
           t1.ufVendedor,
           t1.regufvendedor,
           SUM(t1.vlPagamento) AS gmvTotal,
@@ -103,7 +104,7 @@ tb_join AS (
     ORDER BY t1.idVendedor
 )
 
-SELECT '2017-06-01' AS dtRef, *
+SELECT *
 FROM tb_join 
 
 -- COMMAND ----------

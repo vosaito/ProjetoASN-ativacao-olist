@@ -14,6 +14,7 @@ WITH tb_base AS (
           SUM(ip.vlPreco) AS vlPreco, 
           SUM(ip.vlFrete) AS vlFrete,
           COUNT(ip.idPedido) AS qtdeItens,
+          pp.descTipoPagamento,
           pp.nrParcelas
     FROM workspace.olist.pedido AS p
     LEFT JOIN workspace.olist.item_pedido AS ip
@@ -27,7 +28,6 @@ WITH tb_base AS (
 
     WHERE date(dtPedido) < '2017-06-01'
     AND ip.idVendedor IS NOT NULL
-    AND pp.descTipoPagamento = 'credit_card'
 
     GROUP BY ALL
 ),
@@ -50,7 +50,7 @@ tb_featVendas AS (
           AVG(DATE_DIFF(dtEstimativaEntrega, dtPedido)) AS mediaPrazoEntrega,
           SUM(vlFrete)/SUM(vlPreco) AS pctFretePorPreco,
           SUM(vlFrete) AS vlFreteTotal,
-          COUNT(CASE WHEN nrParcelas > 1 THEN 1 END) / COUNT(DISTINCT idPedido) AS pctPedidoParcelado,
+          COUNT(CASE WHEN nrParcelas > 1 AND descTipoPagamento = 'credit_card' THEN 1 END) / COUNT(DISTINCT idPedido) AS pctPedidoParcelado, 
           COUNT(CASE WHEN dtEntregue <= dtEstimativaEntrega THEN 1 END) / COUNT(DISTINCT idPedido) AS pctPedidoNoPrazo,
           TRY_DIVIDE(COUNT(CASE WHEN dtPedido >= dtRef - INTERVAL 28 DAY THEN idPedido END), COUNT(CASE WHEN dtPedido >= dtRef - INTERVAL 56 DAY AND dtPedido < dtRef - INTERVAL 28 DAY THEN idPedido END)) AS txCrescimentoM1,
           TRY_DIVIDE(COUNT(CASE WHEN dtPedido >= dtRef - INTERVAL 56 DAY AND dtPedido < dtRef - INTERVAL 28 DAY THEN idPedido END), COUNT(CASE WHEN dtPedido >= dtRef - INTERVAL 84 DAY AND dtPedido < dtRef - INTERVAL 56 DAY THEN idPedido END)) AS txCrescimentoM2,
