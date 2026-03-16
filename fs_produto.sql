@@ -26,7 +26,7 @@ WITH tb_base AS (
     ON ip.idProduto = pr.idProduto
 
     WHERE date(p.dtPedido) < '2017-06-01'
-    AND pr.descCategoria IS NOT NULL
+    AND ip.idVendedor IS NOT NULL
 ),
 tb_summarySeller AS (
     SELECT idVendedor,
@@ -138,7 +138,8 @@ tb_summarySellerShare AS (
   GROUP BY sc.idVendedor
 ),
 tb_join AS (
-  SELECT * 
+  SELECT '2017-06-01' AS dtRef,
+        * 
   FROM tb_summaryseller AS s
   LEFT JOIN tb_summarysellertopcat AS tc USING (idVendedor)
   LEFT JOIN tb_summarysellershare AS ss USING (idVendedor)
