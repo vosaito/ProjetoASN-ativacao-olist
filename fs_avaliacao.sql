@@ -1,4 +1,8 @@
 -- Databricks notebook source
+DROP TABLE IF EXISTS workspace.olist.fs_seller_avaliacao;
+
+CREATE TABLE workspace.olist.fs_seller_avaliacao
+
 -- JOINs das tabelas para gerar a base para avaliacao
 WITH tb_base AS (
     SELECT DISTINCT v.idVendedor,

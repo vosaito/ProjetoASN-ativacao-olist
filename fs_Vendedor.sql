@@ -1,4 +1,8 @@
 -- Databricks notebook source
+DROP TABLE IF EXISTS workspace.olist.fs_seller_vendedor;
+
+CREATE TABLE workspace.olist.fs_seller_vendedor
+
 WITH tb_base AS (
     SELECT v.idVendedor,
           p.dtPedido,
